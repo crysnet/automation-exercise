@@ -5,12 +5,6 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const envSchema = z.object({
   TEST_BASE_URL: z.url("TEST_BASE_URL must be a valid URL"),
-  TEST_USERNAME: z
-    .string({ message: "TEST_USERNAME is required" })
-    .min(1, "TEST_USERNAME cannot be empty"),
-  TEST_PASSWORD: z
-    .string({ message: "TEST_PASSWORD is required" })
-    .min(1, "TEST_PASSWORD cannot be empty"),
   HEADLESS: z
     .string()
     .optional()
@@ -19,6 +13,22 @@ const envSchema = z.object({
       message: "HEADLESS must be 'true' or 'false'",
     })
     .transform((val) => val === "true"),
+  WORKERS: z
+    .string()
+    .optional()
+    .default("1")
+    .refine((val) => !isNaN(parseInt(val, 10)), {
+      message: "WORKERS must be a valid number",
+    })
+    .transform((val) => parseInt(val, 10)),
+  RETRIES: z
+    .string()
+    .optional()
+    .default("1")
+    .refine((val) => !isNaN(parseInt(val, 10)), {
+      message: "RETRIES must be a valid number",
+    })
+    .transform((val) => parseInt(val, 10)),
 });
 
 const validateEnv = () => {

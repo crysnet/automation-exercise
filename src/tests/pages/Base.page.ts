@@ -13,7 +13,11 @@ export class BasePage {
     this.action = new Action();
   }
 
-  async navigate(slug?: string) {
-    await this.page.goto(slug || "/");
+  async navigate(url?: string) {
+    await this.page.goto(url ?? "/");
+  }
+
+  async assertPageToHaveTitle(title: string) {
+    await this.assert.toHaveTitle(this.page, title);
   }
 }

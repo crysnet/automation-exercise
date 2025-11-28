@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "target": "esnext",
     "rootDir": "src",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/support/*": ["src/support/*"],

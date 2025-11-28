@@ -1,19 +1,32 @@
 import { defineConfig, devices } from "@playwright/test";
-import { TEST_TIMEOUT } from "./src/constants/timeout";
+import { EXPECT_TIMEOUT, TEST_TIMEOUT } from "./src/constants/timeout";
 import env from "./env";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./tests",
+  testDir: "./src/tests/specs",
   tsconfig: "./tsconfig.json",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  retries: process.env.CI ? 2 : env.RETRIES,
+  workers: process.env.CI ? 1 : env.WORKERS,
+  reporter: [
+    [
+      "allure-playwright",
+      {
+        resultsDir: "allure-results",
+        detail: true,
+        suiteTitle: false,
+      },
+    ],
+    ["html"],
+  ],
   timeout: TEST_TIMEOUT,
+  expect: {
+    timeout: EXPECT_TIMEOUT,
+  },
   use: {
     baseURL: env.TEST_BASE_URL,
     headless: env.HEADLESS,
@@ -25,7 +38,6 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },

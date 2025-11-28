@@ -1,31 +1,97 @@
-import { test } from "src/tests/fixtures/page.fixture";
+import * as allure from "allure-js-commons";
+import { test } from "@/fixtures/page.fixture";
+import { accountSchema } from "@/fixtures/data/schemas/account.schema";
+import accountJson from "@/fixtures/data/account.data.json";
 
-test("Test Case 1: Register User", async ({ homePage, signupPage }) => {
-  test.beforeEach(async () => {
-    // 1. Launch browser
-    // 2. Navigate to url 'http://automationexercise.com'
+const account = accountSchema.parse(accountJson);
+
+test.describe("Signup Feature Tests", () => {
+  test.beforeEach(async ({ homePage }) => {
     await homePage.navigate();
+    await allure.step(
+      `Navigate to home page: ${homePage.page.url()}`,
+      async () => {
+        await homePage.assertHomePageVisible();
+      }
+    );
   });
 
-  // Test steps:
-  // 3. Verify that home page is visible successfully
-  await homePage.assertToHaveTitle("Automation Exercise");
-  // 4. Click on 'Signup / Login' button
+  test("Test Case 1: Register User", async ({
+    homePage,
+    loginPage,
+    signupPage,
+    accountCreatedPage,
+    deleteAccountPage,
+  }) => {
+    await allure.step("Click on 'Signup / Login' button", async () => {
+      await homePage.clickOnSignupLink();
+    });
 
-  // 5. Verify 'New User Signup!' is visible
+    await allure.step("Verify 'New User Signup!' is visible", async () => {
+      await loginPage.assertPageToHaveTitle(
+        "Automation Exercise - Signup / Login"
+      );
+      await loginPage.assertNewUserSignupIsVisible();
+    });
 
-  // 6. Enter name and email address
+    await allure.step(
+      "Enter name and email address and click 'Signup' button",
+      async () => {
+        await loginPage.signup(account.name, account.email);
+      }
+    );
 
-  // 7. Click 'Signup' button
-  // 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
-  // 9. Fill details: Title, Name, Email, Password, Date of birth
-  // 10. Select checkbox 'Sign up for our newsletter!'
-  // 11. Select checkbox 'Receive special offers from our partners!'
-  // 12. Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number
-  // 13. Click 'Create Account button'
-  // 14. Verify that 'ACCOUNT CREATED!' is visible
-  // 15. Click 'Continue' button
-  // 16. Verify that 'Logged in as username' is visible
-  // 17. Click 'Delete Account' button
-  // 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+    await allure.step(
+      "Verify that 'ENTER ACCOUNT INFORMATION' is visible",
+      async () => {
+        await signupPage.assertPageToHaveTitle("Automation Exercise - Signup");
+      }
+    );
+
+    await allure.step(
+      "Fill details: Title, Name, Email, Password, Date of birth, Select checkboxes",
+      async () => {
+        await signupPage.completeAccountInformationForm({
+          title: account.title,
+          name: account.name,
+          password: account.password,
+          dateOfBirth: account.dateOfBirth,
+        });
+      }
+    );
+
+    await allure.step(
+      "Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number",
+      async () => {
+        await signupPage.completeAddressInformationForm(account.address);
+      }
+    );
+
+    await allure.step("Click 'Create Account' button", async () => {
+      await signupPage.clickOnCreateAccountButton();
+    });
+
+    await allure.step("Verify that 'ACCOUNT CREATED!' is visible", async () => {
+      await accountCreatedPage.assertTitleIsVisible();
+    });
+
+    await allure.step("Click 'Continue' button", async () => {
+      await accountCreatedPage.clickOnContinueButton();
+    });
+
+    await allure.step(
+      "Verify that 'Logged in as username' is visible",
+      async () => {
+        await homePage.assertLoggedInAs(account.name);
+      }
+    );
+
+    await allure.step("Click 'Delete Account' button", async () => {
+      await homePage.clickOnDeleteAccountButton();
+    });
+
+    await allure.step("Verify that 'ACCOUNT DELETED!' is visible", async () => {
+      await deleteAccountPage.assertDeletedTitleIsVisible();
+    });
+  });
 });

@@ -9,4 +9,12 @@ export class Assert {
   async toHaveTitle(page: Page, title: string, timeout = EXPECT_TIMEOUT) {
     await expect(page).toHaveTitle(title, { timeout });
   }
+
+  async toContainText(
+    locator: Locator,
+    text: string,
+    timeout = EXPECT_TIMEOUT
+  ) {
+    await expect(locator).toContainText(text, { timeout });
+  }
 }

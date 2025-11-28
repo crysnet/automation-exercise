@@ -1,0 +1,18 @@
+{
+  "title": "Mrs.",
+  "name": "Crysthel Aparicio",
+  "email": "crysapa@gmail.com",
+  "password": "Oreo3151$",
+  "dateOfBirth": { "day": "13", "month": "4", "year": "1998" },
+  "address": {
+    "firstName": "Crysthel",
+    "lastName": "Aparicio",
+    "company": "Tech Solutions",
+    "address": "123 Main St",
+    "country": "United States",
+    "state": "California",
+    "city": "Los Angeles",
+    "zipcode": "90001",
+    "mobileNumber": "+1 310-555-1234"
+  }
+}
