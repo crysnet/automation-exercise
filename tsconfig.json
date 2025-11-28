@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@/support/*": ["src/support/*"],
+      "@/pages/*": ["src/tests/pages/*"],
+      "@/fixtures/*": ["src/tests/fixtures/*"],
+      "@/constants/*": ["src/constants/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

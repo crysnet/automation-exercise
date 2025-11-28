@@ -1,0 +1,10 @@
+# Folders
+node_modules/
+test-results/
+playwright-report/
+playwright-results/
+.vscode/
+
+# Files
+.env
+.DS_Store
