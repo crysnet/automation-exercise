@@ -1,0 +1,8 @@
+# Ignore artifacts:
+build
+coverage
+node_modules/
+allure-results/
+allure-report/
+playwright-report/
+.vscode/
